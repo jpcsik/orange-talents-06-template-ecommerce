@@ -2,6 +2,7 @@ package br.com.zupacademy.jpcsik.mercadolivre.usuario;
 
 import java.time.LocalDateTime;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -12,7 +13,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PastOrPresent;
 import javax.validation.constraints.Size;
 
-import org.mindrot.jbcrypt.BCrypt;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Entity
 public class Usuario {
@@ -25,6 +26,7 @@ public class Usuario {
 	private LocalDateTime dataCriacao = LocalDateTime.now();
 	@Email
 	@NotBlank
+	@Column(unique = true)
 	private String email;
 	@NotBlank
 	@Size(min=6)
@@ -34,10 +36,14 @@ public class Usuario {
 	public Usuario() {
 	}
 
-
+	/**
+	 * 
+	 * @param email string em formato de email
+	 * @param senha string em texto limpo
+	 */
 	public Usuario(@NotBlank String email, @NotBlank @Size(min = 6) String senha) {
 		this.email = email;
-		this.senha = BCrypt.hashpw(senha, BCrypt.gensalt());
+		this.senha = new BCryptPasswordEncoder().encode(senha);
 	}
 	
 }

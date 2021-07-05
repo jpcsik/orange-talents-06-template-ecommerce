@@ -6,10 +6,13 @@ import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 
+import br.com.zupacademy.jpcsik.mercadolivre.validacao.ValorUnico;
+
 public class NovoUsuarioRequest {
 
 	@Email
 	@NotBlank
+	@ValorUnico(campo = "email", classeDeDominio = Usuario.class)
 	private String email;
 	@NotBlank
 	@Size(min=6)
