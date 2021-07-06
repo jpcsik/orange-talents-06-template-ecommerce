@@ -15,7 +15,6 @@ public class ValorUnicoValidator implements ConstraintValidator<ValorUnico, Obje
 	
 	@PersistenceContext
 	private EntityManager manager;
-	
 
 	@Override
 	public void initialize(ValorUnico anotacao) {
@@ -30,6 +29,5 @@ public class ValorUnicoValidator implements ConstraintValidator<ValorUnico, Obje
 		List<?> resultList = query.getResultList();
 		return resultList.isEmpty();
 	}
-
 
 }
