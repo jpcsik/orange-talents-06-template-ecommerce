@@ -24,9 +24,9 @@ public class TokenController {
 	private GeradorToken geradorToken;
 
 	@PostMapping
-	public ResponseEntity<?> autenticar(@RequestBody @Valid NovoTokenRequest form) {
+	public ResponseEntity<?> autenticar(@RequestBody @Valid NovoTokenRequest novoToken) {
 		
-		UsernamePasswordAuthenticationToken dadosLogin = form.converter();
+		UsernamePasswordAuthenticationToken dadosLogin = novoToken.converter();
 		
 		try {
 			Authentication authentication = authManager.authenticate(dadosLogin);

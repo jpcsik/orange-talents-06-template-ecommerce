@@ -7,12 +7,14 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import br.com.zupacademy.jpcsik.mercadolivre.security.token.AutenticacaoViaTokenFilter;
 import br.com.zupacademy.jpcsik.mercadolivre.security.token.GeradorToken;
 import br.com.zupacademy.jpcsik.mercadolivre.usuario.UsuarioRepository;
 
@@ -43,20 +45,27 @@ public class SecurityConfigurations extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
-				.antMatchers("/h2-console/**")
-					.permitAll()
 				.antMatchers(HttpMethod.POST, "/usuario/cadastrar")
 					.permitAll()
 				.antMatchers(HttpMethod.POST, "/token")
 					.permitAll()
 				.antMatchers(HttpMethod.POST, "/categoria/cadastrar")
 					.permitAll()
-			.anyRequest()
-			.authenticated()
-				.and()
-			.csrf().disable().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-				.and()
-			.addFilterBefore(new AutenticacaoViaTokenFilter(geradorToken, usuarioRepository), UsernamePasswordAuthenticationFilter.class);
+				.antMatchers("/h2-console/**")
+					.permitAll()
+				.anyRequest().authenticated()
+					.and()
+				.csrf().disable()
+				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+					.and()
+				.addFilterBefore(new AutenticacaoViaTokenFilter(geradorToken, usuarioRepository), UsernamePasswordAuthenticationFilter.class);
 	}
+	
+	 @Override
+	 public void configure(WebSecurity web) throws Exception {
+	        web
+	        .ignoring()
+	        .antMatchers("/h2-console/**");
+	    }
 	
 }

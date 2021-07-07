@@ -1,4 +1,4 @@
-package br.com.zupacademy.jpcsik.mercadolivre.security;
+package br.com.zupacademy.jpcsik.mercadolivre.security.token;
 
 import java.io.IOException;
 
@@ -11,7 +11,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import br.com.zupacademy.jpcsik.mercadolivre.security.token.GeradorToken;
 import br.com.zupacademy.jpcsik.mercadolivre.usuario.Usuario;
 import br.com.zupacademy.jpcsik.mercadolivre.usuario.UsuarioRepository;
 

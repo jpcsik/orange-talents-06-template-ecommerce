@@ -54,6 +54,8 @@ public class Usuario implements UserDetails{
 	public Long getId() {
 		return id;
 	}
+	
+	//Metodos do Spring Security: 
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
