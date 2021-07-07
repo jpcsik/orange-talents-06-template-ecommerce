@@ -37,8 +37,9 @@ public class CategoriaValidator implements Validator{
 		Optional<Categoria> categoria = categoriaRepository.findById(request.getIdCategoriaMae());		
 		
 		if(categoria.isEmpty()) {
-			errors.rejectValue("categoriaMae", null, "Categoria não cadastrada!");
+			errors.rejectValue("idCategoriaMae", null, "Categoria não cadastrada!");
 		}
+		
 	
 	}
 

@@ -32,5 +32,9 @@ public class Categoria {
 		this.nome = nome;
 		this.categoriaMae = categoriaMae;
 	}
+
+	public Long getId() {
+		return this.id;
+	}
 	
 }

@@ -25,9 +25,7 @@ public class NovaCategoriaRequest {
 	public Categoria toCategoria(CategoriaRepository categoriaRepository) {
 		if(this.idCategoriaMae != null) {
 		Categoria mae = categoriaRepository.findById(idCategoriaMae).get();
-		Categoria categoria = new Categoria(
-				this.nome,
-				mae);
+		Categoria categoria = new Categoria(this.nome,mae);
 		return categoria;
 		}
 		Categoria categoria = new Categoria(this.nome);
