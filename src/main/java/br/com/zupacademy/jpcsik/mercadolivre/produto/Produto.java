@@ -88,5 +88,9 @@ public class Produto {
 	public boolean pertenceAoProprietario(Usuario proprietario) {
 		return this.proprietario.getId() == proprietario.getId();
 	}
+
+	public Usuario getProprietario() {
+		return proprietario;
+	}
 	
 }

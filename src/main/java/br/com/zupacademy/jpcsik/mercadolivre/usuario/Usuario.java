@@ -55,6 +55,10 @@ public class Usuario implements UserDetails{
 		return id;
 	}
 	
+	public String getEmail() {
+		return email;
+	}
+	
 	//Metodos do Spring Security: 
 
 	@Override
@@ -91,5 +95,5 @@ public class Usuario implements UserDetails{
 	public boolean isEnabled() {
 		return true;
 	}
-	
+
 }
