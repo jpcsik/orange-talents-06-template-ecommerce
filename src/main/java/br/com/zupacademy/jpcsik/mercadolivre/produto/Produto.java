@@ -3,8 +3,10 @@ package br.com.zupacademy.jpcsik.mercadolivre.produto;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -23,6 +25,7 @@ import javax.validation.constraints.Size;
 import br.com.zupacademy.jpcsik.mercadolivre.categoria.Categoria;
 import br.com.zupacademy.jpcsik.mercadolivre.produto.caracteristica.Caracteristica;
 import br.com.zupacademy.jpcsik.mercadolivre.produto.caracteristica.CaracteristicaRequest;
+import br.com.zupacademy.jpcsik.mercadolivre.produto.imagem.ImagemProduto;
 import br.com.zupacademy.jpcsik.mercadolivre.usuario.Usuario;
 
 @Entity
@@ -40,7 +43,7 @@ public class Produto {
 	@Min(1)
 	private Integer quantidade;
 	@NotNull
-	@OneToMany(mappedBy = "produto")
+	@OneToMany(mappedBy = "produto", cascade=CascadeType.PERSIST)
 	private List<Caracteristica> caracteristicas;
 	@NotBlank
 	@Size(max=1000)
@@ -57,6 +60,8 @@ public class Produto {
 	@NotNull
 	@PastOrPresent
 	private LocalDateTime dataCriacao = LocalDateTime.now();
+	@OneToMany(mappedBy = "produto", cascade=CascadeType.MERGE)
+	private Set<ImagemProduto> imagemProduto;
 	
 	@Deprecated
 	public Produto() {
@@ -75,8 +80,13 @@ public class Produto {
 		this.proprietario = proprietario;
 	}
 
-	public List<Caracteristica> getCaracteristicas() {
-		return caracteristicas;
+	public void salvarImagens(Set<String> links) {
+		this.imagemProduto = links.stream().map(link -> new ImagemProduto(link, this)).collect(Collectors.toSet());
+		
+	}
+
+	public boolean pertenceAoProprietario(Usuario proprietario) {
+		return this.proprietario.getId() == proprietario.getId();
 	}
 	
 }
