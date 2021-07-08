@@ -13,6 +13,10 @@ public class NovaImagemRequest {
 	@NotNull
 	private List<MultipartFile> imagem;
 	
+	public NovaImagemRequest(@Size(min = 1) @NotNull List<MultipartFile> imagem) {
+		this.imagem = imagem;
+	}
+
 	public void setImagens(List<MultipartFile> imagem) {
 		this.imagem = imagem;
 	}

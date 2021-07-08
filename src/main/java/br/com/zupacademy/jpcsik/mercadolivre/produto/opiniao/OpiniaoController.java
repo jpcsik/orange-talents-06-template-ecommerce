@@ -1,6 +1,4 @@
-package br.com.zupacademy.jpcsik.mercadolivre.produto.imagem;
-
-import java.util.Set;
+package br.com.zupacademy.jpcsik.mercadolivre.produto.opiniao;
 
 import javax.validation.Valid;
 
@@ -10,6 +8,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.zupacademy.jpcsik.mercadolivre.produto.Produto;
@@ -17,33 +16,27 @@ import br.com.zupacademy.jpcsik.mercadolivre.produto.ProdutoRepository;
 import br.com.zupacademy.jpcsik.mercadolivre.usuario.Usuario;
 
 @RestController
-public class ImagemController {
+public class OpiniaoController {
+
+	@Autowired
+	private OpiniaoRepository opiniaoRepository;
 	
 	@Autowired
 	private ProdutoRepository produtoRepository;
 	
-	@Autowired
-	private Uploader bancoImagensFake;
-	
-	@PostMapping("imagem/cadastrar/{id}")
+	@PostMapping("/opiniao/cadastrar/{id}")
 	@Transactional
-	public ResponseEntity<?> cadastrar(@PathVariable Long id, @Valid NovaImagemRequest novaImagem){
+	public ResponseEntity<?> cadastrar(@PathVariable Long id, @RequestBody @Valid NovaOpiniaoRequest novaOpiniao){
 		
 		if(!produtoRepository.existsById(id)) {
 			return ResponseEntity.badRequest().body("Produto não existe!");
 		}
 		
-		Set<String> links = bancoImagensFake.salvar(novaImagem.getImagens()); 
-		
-		Usuario proprietario = (Usuario) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		Produto produto = produtoRepository.findById(id).get();
-
-		if(!produto.pertenceAoProprietario(proprietario)) {
-			return ResponseEntity.status(403).body("Usuario não autorizado!");
-		}
+		Usuario usuario = (Usuario) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		
-		produto.salvarImagens(links);
-		produtoRepository.save(produto);
+		Opiniao opiniao = novaOpiniao.toOpiniao(produto, usuario);
+		opiniaoRepository.save(opiniao);
 		
 		return ResponseEntity.ok().build();
 	}
