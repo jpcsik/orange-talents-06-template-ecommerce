@@ -29,7 +29,7 @@ public class OpiniaoController {
 	public ResponseEntity<?> cadastrar(@PathVariable Long id, @RequestBody @Valid NovaOpiniaoRequest novaOpiniao){
 		
 		if(!produtoRepository.existsById(id)) {
-			return ResponseEntity.badRequest().body("Produto não existe!");
+			return ResponseEntity.notFound().build();
 		}
 		
 		Produto produto = produtoRepository.findById(id).get();

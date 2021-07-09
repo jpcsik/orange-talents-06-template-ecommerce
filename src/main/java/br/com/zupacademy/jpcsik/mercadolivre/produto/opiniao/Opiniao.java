@@ -36,7 +36,7 @@ public class Opiniao {
 	@NotNull
 	@ManyToOne
 	private Usuario usuario;
-
+	
 	@Deprecated
 	public Opiniao() {
 	}
@@ -50,4 +50,11 @@ public class Opiniao {
 		this.usuario = usuario;
 	}
 
+	public String getTitulo() {
+		return titulo;
+	}
+	
+	public String getDescricao() {
+		return descricao;
+	}
 }

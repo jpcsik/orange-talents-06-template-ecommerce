@@ -30,7 +30,7 @@ public class ImagemController {
 	public ResponseEntity<?> cadastrar(@PathVariable Long id, @Valid NovaImagemRequest novaImagem){
 		
 		if(!produtoRepository.existsById(id)) {
-			return ResponseEntity.badRequest().body("Produto não existe!");
+			return ResponseEntity.notFound().build();
 		}
 		
 		Set<String> links = bancoImagensFake.salvar(novaImagem.getImagens()); 

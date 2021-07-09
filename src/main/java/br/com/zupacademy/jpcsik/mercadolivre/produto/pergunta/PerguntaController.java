@@ -34,7 +34,7 @@ public class PerguntaController {
 	public ResponseEntity<?> cadastrar(@PathVariable Long id,@RequestBody @Valid NovaPerguntaRequest novaPergunta){
 		
 		if(!produtoRepository.existsById(id)) {
-			return ResponseEntity.badRequest().body("Produto não existe!");
+			return ResponseEntity.notFound().build();
 		}
 		
 		Usuario usuario = (Usuario) SecurityContextHolder.getContext().getAuthentication().getPrincipal();

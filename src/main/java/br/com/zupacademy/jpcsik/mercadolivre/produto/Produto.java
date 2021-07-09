@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
@@ -26,6 +27,8 @@ import br.com.zupacademy.jpcsik.mercadolivre.categoria.Categoria;
 import br.com.zupacademy.jpcsik.mercadolivre.produto.caracteristica.Caracteristica;
 import br.com.zupacademy.jpcsik.mercadolivre.produto.caracteristica.CaracteristicaRequest;
 import br.com.zupacademy.jpcsik.mercadolivre.produto.imagem.ImagemProduto;
+import br.com.zupacademy.jpcsik.mercadolivre.produto.opiniao.Opiniao;
+import br.com.zupacademy.jpcsik.mercadolivre.produto.pergunta.Pergunta;
 import br.com.zupacademy.jpcsik.mercadolivre.usuario.Usuario;
 
 @Entity
@@ -62,6 +65,10 @@ public class Produto {
 	private LocalDateTime dataCriacao = LocalDateTime.now();
 	@OneToMany(mappedBy = "produto", cascade=CascadeType.MERGE)
 	private Set<ImagemProduto> imagemProduto;
+	@OneToMany(mappedBy = "produto")
+	private List<Pergunta> perguntas;
+	@OneToMany(mappedBy = "produto")
+	private List<Opiniao> opinioes;
 	
 	@Deprecated
 	public Produto() {
@@ -92,5 +99,53 @@ public class Produto {
 	public Usuario getProprietario() {
 		return proprietario;
 	}
+
+	public Long getId() {
+		return id;
+	}
 	
+	public String getNome() {
+		return nome;
+	}
+
+	public BigDecimal getValor() {
+		return valor;
+	}
+
+	public String getDescricao() {
+		return descricao;
+	}
+	
+	public List<Caracteristica> getCaracteristicas() {
+		return caracteristicas;
+	}
+
+	public <T> List <T> mapCaracteristicas(Function<Caracteristica, T> funcao) {
+		return this.caracteristicas
+				.stream()
+				.map(funcao)
+				.collect(Collectors.toList());
+	}
+
+	public <T> Set <T> mapImagens(Function<ImagemProduto, T> funcao) {
+		return this.imagemProduto
+				.stream()
+				.map(funcao)
+				.collect(Collectors.toSet());
+	}
+
+	public <T> List <T> mapPergunta(Function<Pergunta, T> funcao) {
+		return this.perguntas
+				.stream()
+				.map(funcao)
+				.collect(Collectors.toList());
+	}
+
+	public  <T> List <T> mapOpiniao(Function<Opiniao, T> funcao) {
+		return this.opinioes
+				.stream()
+				.map(funcao)
+				.collect(Collectors.toList());
+	}
+
 }
