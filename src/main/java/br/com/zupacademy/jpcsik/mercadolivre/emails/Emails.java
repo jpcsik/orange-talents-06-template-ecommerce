@@ -6,6 +6,7 @@ import javax.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import br.com.zupacademy.jpcsik.mercadolivre.compra.Compra;
 import br.com.zupacademy.jpcsik.mercadolivre.produto.pergunta.Pergunta;
 
 @Service
@@ -21,6 +22,15 @@ public class Emails {
 				"novapergunta@nossomercadolivre.com", 
 				pergunta.getUsuario().getEmail(),
 				pergunta.getProduto().getProprietario().getEmail());
+	}
+	
+	public void mandarEmailCompra(@NotNull @Valid Compra compra) {
+		mailer.send( 
+				"Nova Compra!",
+				compra.getProduto().getNome(),
+				"novacompra@nossomercadolivre.com", 
+				compra.getComprador().getEmail(),
+				compra.getProduto().getProprietario().getEmail());
 	}
 
 }

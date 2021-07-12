@@ -23,6 +23,8 @@ import javax.validation.constraints.PastOrPresent;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
 
+import org.springframework.util.Assert;
+
 import br.com.zupacademy.jpcsik.mercadolivre.categoria.Categoria;
 import br.com.zupacademy.jpcsik.mercadolivre.produto.caracteristica.Caracteristica;
 import br.com.zupacademy.jpcsik.mercadolivre.produto.caracteristica.CaracteristicaRequest;
@@ -43,7 +45,6 @@ public class Produto {
 	@Positive
 	private BigDecimal valor;
 	@NotNull
-	@Min(1)
 	private Integer quantidade;
 	@NotNull
 	@OneToMany(mappedBy = "produto", cascade=CascadeType.PERSIST)
@@ -146,6 +147,14 @@ public class Produto {
 				.stream()
 				.map(funcao)
 				.collect(Collectors.toList());
+	}
+
+	public Boolean abaterEstoque(@Positive @NotNull Integer quantidade) {
+		Assert.isTrue(quantidade>0, "A quantidade deve ser maior do que zero! "+quantidade);
+		if(quantidade <= this.quantidade) {
+			this.quantidade-=quantidade;
+			return true;
+		}return false;
 	}
 
 }
