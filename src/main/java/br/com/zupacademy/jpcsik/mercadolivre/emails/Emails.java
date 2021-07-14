@@ -15,7 +15,7 @@ public class Emails {
 	@Autowired
 	private Mailer mailer;
 	
-	public void mandarEmailPergunta(@NotNull @Valid Pergunta pergunta) {
+	public void mandarEmailNovaPergunta(@NotNull @Valid Pergunta pergunta) {
 		mailer.send( 
 				"Nova Pergunta!",
 				pergunta.getTitulo(),
@@ -24,13 +24,32 @@ public class Emails {
 				pergunta.getProduto().getProprietario().getEmail());
 	}
 	
-	public void mandarEmailCompra(@NotNull @Valid Compra compra) {
+	public void mandarEmailNovaCompra(@NotNull @Valid Compra compra) {
 		mailer.send( 
 				"Nova Compra!",
 				compra.getProduto().getNome(),
 				"novacompra@nossomercadolivre.com", 
 				compra.getComprador().getEmail(),
 				compra.getProduto().getProprietario().getEmail());
+	}
+
+	public void mandarEmailCompraFizalizada(Compra compra) {
+		mailer.send("Compra finalizada com Sucesso!",
+				"Produto: " + compra.getProduto().getNome()+
+				", Descricao: "+compra.getProduto().getDescricao()+
+				", Preco:"+compra.getProduto().getValor(),
+				"compra@nossomercadolivre.com",
+				compra.getProduto().getProprietario().getEmail(),
+				compra.getComprador().getEmail());
+		
+	}
+
+	public void mandarEmailCompraRejeitada(Compra compra) {
+		mailer.send("Compra rejeitada!",
+				"Tente novamente: http://localhost:8080/comprar",
+				"compra@nossomercadolivre.com",
+				compra.getProduto().getProprietario().getEmail(),
+				compra.getComprador().getEmail());
 	}
 
 }

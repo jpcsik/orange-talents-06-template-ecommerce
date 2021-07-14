@@ -33,10 +33,6 @@ public class PerguntaController {
 	@Transactional
 	public ResponseEntity<?> cadastrar(@PathVariable Long id,@RequestBody @Valid NovaPerguntaRequest novaPergunta){
 		
-		if(!produtoRepository.existsById(id)) {
-			return ResponseEntity.notFound().build();
-		}
-		
 		Usuario usuario = (Usuario) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		Produto produto = produtoRepository.findById(id).get();
 		
@@ -44,7 +40,7 @@ public class PerguntaController {
 		
 		perguntaRepository.save(pergunta);
 		
-		emails.mandarEmailPergunta(pergunta);
+		emails.mandarEmailNovaPergunta(pergunta);
 		
 		return ResponseEntity.ok().build();
 	}

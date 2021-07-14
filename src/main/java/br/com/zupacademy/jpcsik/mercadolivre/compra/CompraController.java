@@ -39,7 +39,7 @@ public class CompraController {
 			Usuario comprador = (Usuario) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 			Compra compra = novaCompra.toCompra(produto, comprador);
 			compraRepository.save(compra);
-			emails.mandarEmailCompra(compra);
+			emails.mandarEmailNovaCompra(compra);
 			return compra.novaUrlPagamento(uriBuilder);
 		}
 		return ResponseEntity.badRequest().body("Estoque insuficiente!");

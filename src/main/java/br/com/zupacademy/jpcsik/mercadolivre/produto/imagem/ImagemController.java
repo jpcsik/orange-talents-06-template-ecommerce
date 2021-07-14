@@ -29,10 +29,6 @@ public class ImagemController {
 	@Transactional
 	public ResponseEntity<?> cadastrar(@PathVariable Long id, @Valid NovaImagemRequest novaImagem){
 		
-		if(!produtoRepository.existsById(id)) {
-			return ResponseEntity.notFound().build();
-		}
-		
 		Set<String> links = bancoImagensFake.salvar(novaImagem.getImagens()); 
 		
 		Usuario proprietario = (Usuario) SecurityContextHolder.getContext().getAuthentication().getPrincipal();

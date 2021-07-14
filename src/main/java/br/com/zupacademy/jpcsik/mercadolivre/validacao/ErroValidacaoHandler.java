@@ -2,6 +2,7 @@ package br.com.zupacademy.jpcsik.mercadolivre.validacao;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -34,6 +35,18 @@ public class ErroValidacaoHandler {
 		});
 		
 		return dto;
+	}
+	
+	@ResponseStatus(code = HttpStatus.BAD_REQUEST)
+	@ExceptionHandler(IllegalArgumentException.class)
+	public String handler2(IllegalArgumentException exception){
+		return exception.getMessage();
+	}
+	
+	@ResponseStatus(code = HttpStatus.NOT_FOUND)
+	@ExceptionHandler(NoSuchElementException.class)
+	public String handler3(NoSuchElementException exception){
+		return exception.getMessage();
 	}
 	
 }

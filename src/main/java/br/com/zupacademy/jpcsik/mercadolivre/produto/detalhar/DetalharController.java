@@ -18,10 +18,6 @@ public class DetalharController {
 	@GetMapping("/produto/detalhar/{id}")
 	public ResponseEntity<DetalheProdutoResponse> detalhar(@PathVariable Long id){
 		
-		if(!produtoRepository.existsById(id)) {
-			return ResponseEntity.notFound().build();
-		}
-		
 		Produto produto = produtoRepository.findById(id).get();
 		return ResponseEntity.ok(new DetalheProdutoResponse(produto, produtoRepository));
 	}
